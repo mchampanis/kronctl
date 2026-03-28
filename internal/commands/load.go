@@ -16,9 +16,16 @@ const revertFile = "active.revert.json"
 
 // resolveLayout resolves named keys (key/target fields) into raw row/col/keycode.
 // Entries that already use row/col/keycode are left unchanged.
+// Mixing named and raw fields for the same axis is rejected.
 func resolveLayout(layout *Layout) error {
 	for i, ll := range layout.Layers {
 		for j, km := range ll.Keys {
+			if km.Key != "" && (km.Row != 0 || km.Col != 0) {
+				return fmt.Errorf("layer %d: key %q conflicts with row/col -- use one or the other", ll.Layer, km.Key)
+			}
+			if km.Target != "" && km.Keycode != 0 {
+				return fmt.Errorf("layer %d: target %q conflicts with keycode -- use one or the other", ll.Layer, km.Target)
+			}
 			if km.Key != "" {
 				pos, err := protocol.LookupPos(km.Key)
 				if err != nil {
@@ -94,7 +101,9 @@ func Load(path string) error {
 		if err := applyLayout(dev, rp); err != nil {
 			return fmt.Errorf("revert previous preset: %w", err)
 		}
-		os.Remove(rp)
+		if err := os.Remove(rp); err != nil {
+			return fmt.Errorf("remove stale revert file: %w", err)
+		}
 		fmt.Println("reverted previous preset")
 	}
 
@@ -142,7 +151,9 @@ func Revert() error {
 	if err := applyLayout(dev, rp); err != nil {
 		return err
 	}
-	os.Remove(rp)
+	if err := os.Remove(rp); err != nil {
+		return fmt.Errorf("remove revert file: %w", err)
+	}
 	fmt.Println("reverted to original mappings")
 	return nil
 }

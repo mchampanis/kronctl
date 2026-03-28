@@ -73,7 +73,7 @@ func main() {
 			fmt.Fprintf(os.Stderr, "error: %v\n", lerr)
 			os.Exit(1)
 		}
-		if layer < 0 {
+		if layer == -1 {
 			fmt.Fprintln(os.Stderr, "error: remap requires a specific layer (0-3), not -1")
 			os.Exit(1)
 		}
