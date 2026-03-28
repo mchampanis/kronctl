@@ -68,7 +68,7 @@ named key in the map. Both formats are accepted by `load`.
 
 Use `kronctl list-keys` to see valid key and keycode names.
 
-## Currently supported hardware
+## Currently supported/tested hardware
 
 - Keychron Q3 Ultra 8K ANSI (vendor 0x3434, product 0x1230)
 
