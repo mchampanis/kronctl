@@ -1,0 +1,7 @@
+*.exe
+*.dll
+*.test
+*.out
+dist/
+
+default-layout.json

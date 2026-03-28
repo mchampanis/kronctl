@@ -1,0 +1,11 @@
+{
+  "layers": [
+    {
+      "layer": 2,
+      "keys": [
+        {"key": "CAPS", "target": "LCTL"},
+        {"key": "ESC", "target": "GRV"}
+      ]
+    }
+  ]
+}
